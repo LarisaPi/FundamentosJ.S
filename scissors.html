@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra, Papel o Tijeras</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Centra el contenido verticalmente */
+            background-color: #f0f0f0; /* Color de fondo */
+            margin: 0; /* Elimina márgenes predeterminados */
+        }
+
+        .container {
+            width: 600px; /* Ancho del contenedor aumentado */
+            height: 700px; /* Alto del contenedor aumentado */
+            background-color: #fff; /* Color de fondo del contenedor */
+            border: 2px solid #333; /* Borde del contenedor */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
+            display: flex;
+            flex-direction: column; /* Alinea los elementos en columna */
+            justify-content: space-between; /* Espacio entre elementos */
+            padding: 20px; /* Espaciado interno */
+            overflow: hidden; /* Oculta el contenido que se desborda */
+        }
+
+        .choices img {
+            width: 100px; /* Ajusta el tamaño de las imágenes de selección */
+            height: 100px; /* Asegura que todas las imágenes tengan la misma altura */
+            cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+            margin: 10px; /* Espaciado entre imágenes */
+        }
+
+        #compuChoice {
+            width: 120px; /* Tamaño para la imagen de la computadora */
+            height: 120px; /* Asegura que la imagen tenga la misma altura */
+            display: none; /* Inicialmente oculto */
+        }
+
+        #piedratijeraspapel {
+            width: 120px; /* Tamaño para la selección del usuario */
+            height: 120px; /* Asegura que la imagen tenga la misma altura */
+            display: none; /* Inicialmente oculto */
+        }
+
+        #result {
+            font-size: 20px; /* Tamaño del texto del resultado */
+            margin-top: 10px;
+            text-align: center; /* Centra el texto del resultado */
+            word-wrap: break-word; /* Permite que el texto se ajuste en varias líneas si es necesario */
+        }
+
+        .parent {
+            display: flex;
+            flex-direction: column; /* Alinea los elementos en columna */
+            align-items: center; /* Centra horizontalmente */
+            justify-content: center; /* Centra verticalmente */
+            flex: 1; /* Ocupa el espacio disponible */
+        }
+
+        .vs {
+            font-size: 32px; /* Tamaño del texto "vs" */
+            margin: 10px; /* Espaciado */
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center; /* Centra las imágenes en la parte inferior */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="parent">
+            <h1>Computadora</h1>
+            <img id="compuChoice" src="" alt="Selección de la computadora" style="display: none;">
+            
+            <div class="vs">vs</div>
+            <h2>Tu</h2>
+            <img id="piedratijeraspapel" src="" alt="Selección del usuario" style="display: none;">
+        </div>
+
+        <div class="choices">
+            <img src="imagenes/piedra.jpg" alt="Piedra" class="choice" data-choice="piedra">
+            <img src="imagenes/tijeras.jpg" alt="Tijeras" class="choice" data-choice="tijeras">
+            <img src="imagenes/papel.jpeg" alt="Papel" class="choice" data-choice="papel">
+        </div>
+
+        <div class="div5" id="result"></div>
+        <button id="playBtn">Play</button>
+    </div>
+
+    <script>
+        const choices = document.querySelectorAll('.choice');
+        const resultDiv = document.getElementById('result');
+        const compuChoiceImg = document.getElementById('compuChoice');
+        const userSelectionImg = document.getElementById('piedratijeraspapel');
+
+        choices.forEach(choice => {
+            choice.addEventListener('click', () => {
+                const userChoice = choice.dataset.choice;
+                userSelectionImg.src = `imagenes/${userChoice}.jpg`;
+                userSelectionImg.style.display = 'block';
+
+                const compuChoice = getComputerChoice();
+                compuChoiceImg.src = `imagenes/${compuChoice}.jpg`; 
+                compuChoiceImg.style.display = 'block'; // Asegura que la imagen de la computadora sea visible
+
+                const result = determineWinner(userChoice, compuChoice);
+                resultDiv.textContent = `Tú elegiste: ${userChoice.charAt(0).toUpperCase() + userChoice.slice(1)}. Computadora eligió: ${compuChoice.charAt(0).toUpperCase() + compuChoice.slice(1)}. ${result}`;
+            });
+        });
+
+        function getComputerChoice() {
+            const choices = ['piedra', 'papel', 'tijeras'];
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        function determineWinner(user, computer) {
+            if (user === computer) {
+                return "¡Es un empate!";
+            } else if (
+                (user === 'piedra' && computer === 'tijeras') ||
+                (user === 'tijeras' && computer === 'papel') ||
+                (user === 'papel' && computer === 'piedra')
+            ) {
+                return "¡Ganaste!";
+            } else {
+                return "¡Perdiste!";
+            }
+        }
+    </script>
+</body>
+</html>
