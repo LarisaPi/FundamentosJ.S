@@ -15,9 +15,9 @@
         }
 
         .container {
-            width: 600px; /* Ancho del contenedor aumentado */
-            height: 700px; /* Alto del contenedor aumentado */
-            background-color: #fff; /* Color de fondo del contenedor */
+            width: 500px; /* Ancho del contenedor aumentado */
+            height: 650px; /* Alto del contenedor aumentado */
+            background-color: #e8eef3; /* Color de fondo del contenedor */
             border: 2px solid #333; /* Borde del contenedor */
             border-radius: 10px; /* Bordes redondeados */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra */
@@ -71,6 +71,29 @@
             display: flex;
             justify-content: center; /* Centra las imágenes en la parte inferior */
         }
+       
+        .playBtn {
+    background-color: #a6ffa9; /* Color de fondo */
+    color: white; /* Color del texto */
+    padding: 15px 32px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño del texto */
+    border: none; /* Sin borde */
+    border-radius: 12px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: background-color 0.3s ease; /* Transición suave para el color de fondo */
+    align-self: center; /* Centra el botón horizontalmente dentro del contenedor */
+    margin-bottom: 20px; /* Espaciado inferior */
+}
+
+/* Efecto al pasar el mouse sobre el botón */
+.playBtn:hover {
+    background-color: #8ef6a3; /* Color de fondo al pasar el mouse */
+}
+        .disabled {
+            pointer-events: none; /* Evita el clic en estas imágenes */
+            opacity: 0.5; /* Reduce la opacidad para indicar que están deshabilitadas */
+        }
     </style>
 </head>
 <body>
@@ -81,59 +104,19 @@
             
             <div class="vs">vs</div>
             <h2>Tu</h2>
-            <img id="piedratijeraspapel" src="" alt="Selección del usuario" style="display: none;">
+            <img id="piedratijeraspapel" src="./imagenes/papel.jpg" alt="Selección del usuario" style="display: none;">
         </div>
 
         <div class="choices">
-            <img src="imagenes/piedra.jpg" alt="Piedra" class="choice" data-choice="piedra">
-            <img src="imagenes/tijeras.jpg" alt="Tijeras" class="choice" data-choice="tijeras">
-            <img src="imagenes/papel.jpeg" alt="Papel" class="choice" data-choice="papel">
+            <img src="./imagenes/piedra.jpg" alt="Piedra" class="choice" data-choice="piedra">
+            <img src="./imagenes/tijeras.jpg" alt="Tijeras" class="choice" data-choice="tijeras">
+            <img src="./imagenes/papel.jpg" alt="Papel" class="choice" data-choice="papel">
         </div>
 
         <div class="div5" id="result"></div>
-        <button id="playBtn">Play</button>
+        <button id="playBtn">!Da click para jugar!💎,🧻,✂️</button>
+        <hr> 
     </div>
-
-    <script>
-        const choices = document.querySelectorAll('.choice');
-        const resultDiv = document.getElementById('result');
-        const compuChoiceImg = document.getElementById('compuChoice');
-        const userSelectionImg = document.getElementById('piedratijeraspapel');
-
-        choices.forEach(choice => {
-            choice.addEventListener('click', () => {
-                const userChoice = choice.dataset.choice;
-                userSelectionImg.src = `imagenes/${userChoice}.jpg`;
-                userSelectionImg.style.display = 'block';
-
-                const compuChoice = getComputerChoice();
-                compuChoiceImg.src = `imagenes/${compuChoice}.jpg`; 
-                compuChoiceImg.style.display = 'block'; // Asegura que la imagen de la computadora sea visible
-
-                const result = determineWinner(userChoice, compuChoice);
-                resultDiv.textContent = `Tú elegiste: ${userChoice.charAt(0).toUpperCase() + userChoice.slice(1)}. Computadora eligió: ${compuChoice.charAt(0).toUpperCase() + compuChoice.slice(1)}. ${result}`;
-            });
-        });
-
-        function getComputerChoice() {
-            const choices = ['piedra', 'papel', 'tijeras'];
-            const randomIndex = Math.floor(Math.random() * choices.length);
-            return choices[randomIndex];
-        }
-
-        function determineWinner(user, computer) {
-            if (user === computer) {
-                return "¡Es un empate!";
-            } else if (
-                (user === 'piedra' && computer === 'tijeras') ||
-                (user === 'tijeras' && computer === 'papel') ||
-                (user === 'papel' && computer === 'piedra')
-            ) {
-                return "¡Ganaste!";
-            } else {
-                return "¡Perdiste!";
-            }
-        }
-    </script>
+        <script src="./scissors.js"></script>
 </body>
 </html>

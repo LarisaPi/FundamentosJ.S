@@ -1,40 +1,61 @@
 const btnPlay = document.getElementById('playBtn');
-const divUser = document.querySelector('.div2');
-const divMaq = document.querySelector('.div4');
 const resultDiv = document.getElementById('result');
-const userChoiceImage = document.getElementById('userChoiceImage');
-const pcChoiceImage = document.getElementById('pcChoiceImage');
+const compuChoiceImg = document.getElementById('compuChoice');
+const userSelectionImg = document.getElementById('piedratijeraspapel');
 
 let userChoice = '';
 
+// Obtener todas las opciones de selección
 const choices = document.querySelectorAll('.choice');
+
+// Deshabilitar las opciones inicialmente
 choices.forEach(choice => {
-    choice.addEventListener('click', () => {
-        userChoice = choice.dataset.choice;
+    choice.classList.add('disabled'); // Añade clase para deshabilitar
+});
+
+// Evento para el botón de juego
+btnPlay.addEventListener('click', () => {
+    // Habilitar las elecciones al hacer clic en el botón
+    choices.forEach(choice => {
+        choice.classList.remove('disabled');
+        choice.addEventListener('click', () => {
+            userChoice = choice.dataset.choice; // Guarda la elección del usuario
+            userSelectionImg.src = `./imagenes/${userChoice}.jpg`;
+            userSelectionImg.style.display = 'block';
+
+            const compuChoice = getComputerChoice();
+            compuChoiceImg.src = `./imagenes/${compuChoice}.jpg`;
+            compuChoiceImg.style.display = 'block';
+
+            const result = determineWinner(userChoice, compuChoice);
+            resultDiv.textContent = `Tú elegiste: ${userChoice.charAt(0).toUpperCase() + userChoice.slice(1)}. Computadora eligió: ${compuChoice.charAt(0).toUpperCase() + compuChoice.slice(1)}. ${result}`;
+            
+            // Deshabilitar las opciones nuevamente después de hacer la elección
+            choices.forEach(choice => {
+                choice.classList.add('disabled');
+            });
+        });
     });
 });
 
-btnPlay.addEventListener('click', () => {
-    if (!userChoice) {
-        alert('Por favor, selecciona piedra, papel o tijeras primero.');
-        return;
-    }
-
+// Función para obtener una elección aleatoria de la computadora
+function getComputerChoice() {
     const options = ['piedra', 'papel', 'tijeras'];
-    const aleatorio = Math.floor(Math.random() * 3);
-    const choiceMaq = options[aleatorio];
-    
-    if (userChoice === choiceMaq) {
-        resultDiv.innerText = "¡Es un empate!";
+    const randomIndex = Math.floor(Math.random() * options.length);
+    return options[randomIndex];
+}
+
+// Función para determinar el ganador
+function determineWinner(user, computer) {
+    if (user === computer) {
+        return "¡Es un empate!";
     } else if (
-        (userChoice === 'piedra' && choiceMaq === 'tijeras') ||
-        (userChoice === 'papel' && choiceMaq === 'piedra') ||
-        (userChoice === 'tijeras' && choiceMaq === 'papel')
+        (user === 'piedra' && computer === 'tijeras') ||
+        (user === 'tijeras' && computer === 'papel') ||
+        (user === 'papel' && computer === 'piedra')
     ) {
-        resultDiv.innerText = "¡Tú ganas!";
+        return "¡Ganaste!";
     } else {
-        resultDiv.innerText = "¡La máquina gana!";
+        return "¡Perdiste!";
     }
-});
-
-
+}
